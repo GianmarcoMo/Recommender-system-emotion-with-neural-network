@@ -1,0 +1,64 @@
+body,html {
+    background: #12151e;
+    color: #bcbcbc;
+    font-family: 'Rubik', sans-serif;
+    height: 100%;
+    margin: 0;
+}
+
+.hero-image {
+    background-image: linear-gradient(rgba(24, 26, 40, 0.57), rgb(16, 21, 30)), url("./media/bg1.jpg");
+  
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    height: 750px;
+}
+
+.hero-text {
+    top: 50%;
+    left: 50%;
+    color: white;
+}
+
+/*  CSS PER NAVBAR  */
+.navbar-dark:hover .navbar-nav:hover .nav-link:hover{
+    color: #e4d804;
+}
+
+.dropdown-item:hover{
+    color: #e4d804;
+}
+
+.navbar{
+    font-family: 'Rubik', sans-serif;
+}
+
+.navbar-brand{
+    font-size: 30px;
+}
+
+.icona-titolo{
+    color: #e4d804;
+}
+
+.searchInput{
+    margin-right: 5px;
+}
+
+.nav-item, .nav-link{
+    font-size: 20px;
+}
+
+.bg-dark{
+    background-color: transparent !important;
+}
+
+/*CSS PER MOBILE*/
+@media only screen and (max-width: 768px) {
+    /*  CSS NAVBAR  */
+    .navbar-brand{
+        font-size: 25px;
+    }
+}
