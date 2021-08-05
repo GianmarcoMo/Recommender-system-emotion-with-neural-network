@@ -1,18 +1,47 @@
 import React from 'react';
 
-import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
-import Container from 'react-bootstrap/Container'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import { FormControl } from 'react-bootstrap';
+import { useState } from 'react';
 
-const NavbarSito = () =>{
+import { FormControl, Navbar, Nav, NavDropdown, Container, Button, Form, Modal} from 'react-bootstrap';
+
+function Example() {
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    return (
+        <>
+        <Button className="btnCerca" onClick={handleShow}>
+            <i class="fas fa-search"></i>
+        </Button>
+
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+            </Modal.Header>
+            <Modal.Body>
+            <Form className="d-flex">
+                <FormControl
+                    type="search"
+                    placeholder="Cerca qualcosa"
+                    className="mr-2 searchInput "
+                    aria-label="Search"
+                />
+                <Button variant="outline-warning"><i class="fas fa-search"></i></Button>
+            </Form>
+            </Modal.Body>
+            <Modal.Footer>
+            </Modal.Footer>
+        </Modal>
+        </>
+    );
+}
+
+const NavbarDashboard = () =>{
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
-            <Navbar.Brand href="/"><i class="fas fa-video icona-titolo"></i> MovRecommend</Navbar.Brand>
+            <Navbar.Brand href="/dashboard"><i class="fas fa-video icona-titolo"></i> MovRecommend</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
@@ -38,15 +67,10 @@ const NavbarSito = () =>{
                     <Nav.Link href="/come-funziona">Come funziona?</Nav.Link>
                 </Nav>
                 <Nav>
-                <Form className="d-flex">
-                    <FormControl
-                        type="search"
-                        placeholder="Cerca qualcosa"
-                        className="mr-2 searchInput"
-                        aria-label="Cerca"
-                    />
-                    <Button variant="outline-light">Cerca</Button>
-                    </Form>
+                    <Example/>
+                </Nav>
+                <Nav>
+                    <Nav.Link href="/utente"><i class="far fa-user-circle"></i></Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             </Container>
@@ -54,4 +78,4 @@ const NavbarSito = () =>{
     )
 }
 
-export default NavbarSito;
+export default NavbarDashboard;
