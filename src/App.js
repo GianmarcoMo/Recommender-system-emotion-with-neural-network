@@ -11,6 +11,7 @@ import FooterHome from './components/index/FooterHomepage'
 
 import Login from './components/index/Login';
 import Registrati from './components/index/Registrati';
+import Film from './components/principale/Film';
 
 //  COMPONENTI BOOTSTRAP
 
@@ -36,6 +37,7 @@ function App() {
       <Switch>
         <Route path="/dashboard">    
           <NavbarDashboard />
+          <Film />
         </Route>
       </Switch>
     </Router>

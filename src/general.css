@@ -128,6 +128,13 @@ a:hover{
     margin-top: 3%;
 }
 
+/*  CSS PER FILM    */
+.filmItem{
+    margin-right: 10%;
+    margin-bottom: 10%;
+}
+
+
 /*CSS PER MOBILE*/
 @media only screen and (max-width: 768px) {
     /*  CSS NAVBAR  */
