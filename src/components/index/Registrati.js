@@ -2,12 +2,10 @@ import React from 'react';
 
 import {Form, Button} from 'react-bootstrap'
 import {Link} from 'react-router-dom';
-import Logo from './Logo';
 
 const Registrati = () =>{
     return (
         <div>
-            <Logo/>
             <div className="account-form account-form-registrati">        
                 <h1 className="titoloHomepage">Registrati</h1>
                 <Form action="/dashboard">

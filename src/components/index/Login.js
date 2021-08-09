@@ -2,12 +2,10 @@ import React from 'react';
 
 import {Form, Button} from 'react-bootstrap'
 import {Link} from 'react-router-dom';
-import Logo from './Logo';
 
 const Login = () =>{
     return (
         <div>
-            <Logo/>
             <div className="account-form">        
                 <h1 className="titoloHomepage">Login</h1>
                 <Form action="/dashboard">

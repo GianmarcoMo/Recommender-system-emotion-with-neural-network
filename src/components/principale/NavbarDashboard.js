@@ -46,22 +46,22 @@ const NavbarDashboard = () =>{
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
                     <NavDropdown title="Film" id="collasible-nav-dropdown">
-                        <NavDropdown.Item href="/film/adolescenziale">Adolescenziale</NavDropdown.Item>
-                        <NavDropdown.Item href="/film/animato">Animato</NavDropdown.Item>
-                        <NavDropdown.Item href="/film/azione">Azione</NavDropdown.Item>
-                        <NavDropdown.Item href="/film/commedia">Commedia</NavDropdown.Item>
-                        <NavDropdown.Item href="/film/drammatico">Drammatico</NavDropdown.Item>
-                        <NavDropdown.Item href="/film/horror">Horror</NavDropdown.Item>
-                        <NavDropdown.Item href="/film/thriller">Thriller</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Adolescenziale</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Animato</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Azione</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Commedia</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Drammatico</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Horror</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Thriller</NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="Serie TV" id="collasible-nav-dropdown">
-                        <NavDropdown.Item href="/serie/adolescenziale">Adolescenziale</NavDropdown.Item>
-                        <NavDropdown.Item href="/serie/animato">Animato</NavDropdown.Item>
-                        <NavDropdown.Item href="/serie/azione">Azione</NavDropdown.Item>
-                        <NavDropdown.Item href="/serie/commedia">Commedia</NavDropdown.Item>
-                        <NavDropdown.Item href="/serie/drammatico">Drammatico</NavDropdown.Item>
-                        <NavDropdown.Item href="/serie/horror">Horror</NavDropdown.Item>
-                        <NavDropdown.Item href="/serie/thriller">Thriller</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Adolescenziale</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Animato</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Azione</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Commedia</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Drammatico</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Horror</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard">Thriller</NavDropdown.Item>
                     </NavDropdown>
                     <Nav.Link href="/popolari">Popolari</Nav.Link>
                     <Nav.Link href="/come-funziona">Come funziona?</Nav.Link>
