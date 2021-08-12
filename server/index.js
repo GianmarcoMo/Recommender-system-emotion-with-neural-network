@@ -1,13 +1,17 @@
-const express = require("express");
-const mysql = require("mysql");
-const cors = require("cors");
+import express, { json, response } from "express";
+import { createConnection } from "mysql";
+import cors from "cors";
+
+//  Per criptare le password da inserire nel datbase
+import bcrypt from 'bcrypt';
+const saltRounds = 10;
 
 const app = express();
 
-app.use(express.json()); 
+app.use(json()); 
 app.use(cors());
 
-const db = mysql.createConnection({
+const db = createConnection({
     user: 'root',
     host: 'localhost',
     password: 'password',
@@ -20,37 +24,50 @@ app.post('/registrati', (req,res)=>{
     const emailUtente = req.body.email;
     const passUtente = req.body.password;
 
-    db.query('INSERT INTO utente (nome, cognome, email, password) VALUES (?,?,?,?)', 
-        [nomeUtente, cognomeUtente, emailUtente, passUtente], 
-        (err,result) => {
-            if(err){
-                console.log(err);
-            }else{
-                if(result){
-                    res.send(result);
-                }else{
-                    res.send({message: "Qualcosa è andato storto."});
+    //  metodo per cripatare la password
+    bcrypt.hash(passUtente, saltRounds, (err, hash) =>{
+        if(err){
+            console.log(err);
+        }else{
+            db.query('INSERT INTO utente (nome, cognome, email, password) VALUES (?,?,?,?)', 
+                [nomeUtente, cognomeUtente, emailUtente, hash], 
+                (err,result) => {
+                    if(err){
+                        console.log(err);
+                    }else{
+                        if(result){
+                            res.send(result);
+                        }else{
+                            res.send({message: "Qualcosa è andato storto."});
+                        }
+                    }
                 }
-            }
+            );
         }
-    );
+    });    
 })
 
 app.post('/login', (req,res)=>{
     const emailUtente = req.body.email;
     const passUtente = req.body.password;
 
-    db.query('SELECT * FROM utente WHERE email = ? AND password = ?', 
-        [emailUtente, passUtente], 
+    db.query('SELECT * FROM utente WHERE email = ?;', 
+        emailUtente,
         (err,result) => {
             if(err){
                 res.send({err: err});
             }
 
             if(result.length > 0){
-                res.send(result);
+                bcrypt.compare(passUtente, result[0].password, (err, response) =>{
+                    if(response){
+                        res.send(response);
+                    }else{
+                        res.send(response);
+                    }
+                })
             }else{
-                res.send({message: "Email o password sbagliata."});
+                res.send({message: result.length});
             }
         }
     );

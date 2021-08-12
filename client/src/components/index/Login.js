@@ -18,8 +18,11 @@ const Login = () =>{
             email: email,
             password: password
         }).then(function (response) {
-            //console.log(response);
-            history.push('/dashboard')            
+            console.log(response);
+            if((response.data).message > 0 || response.data === true)
+                history.push('/dashboard');
+            else
+                alert("Email o password sbagliata.");
         }).catch(function (error) {
             console.log(error);
         });
@@ -40,7 +43,7 @@ const Login = () =>{
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password" onChange={(e) => {setPassword(e.target.value);}} required />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                <Form.Group className="mb-3" contrcd olId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Resta collegato" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
