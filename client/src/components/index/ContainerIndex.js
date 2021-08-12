@@ -4,8 +4,8 @@ import DescHomepage from './DescHomepage';
 
 const ContainerHomepage = ()=>{
     return (
-        <div class="hero-image">
-            <div class="hero-text">
+        <div className="hero-image">
+            <div className="hero-text">
                 <DescHomepage/>
             </div>
         </div> 

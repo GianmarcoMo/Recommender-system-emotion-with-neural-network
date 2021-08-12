@@ -13,7 +13,7 @@ function Example() {
     return (
         <>
         <Button className="btnCerca" onClick={handleShow}>
-            <i class="fas fa-search"></i>
+            <i className="fas fa-search"></i>
         </Button>
 
         <Modal show={show} onHide={handleClose}>
@@ -27,7 +27,7 @@ function Example() {
                     className="mr-2 searchInput "
                     aria-label="Search"
                 />
-                <Button variant="outline-warning"><i class="fas fa-search"></i></Button>
+                <Button variant="outline-warning"><i className="fas fa-search"></i></Button>
             </Form>
             </Modal.Body>
             <Modal.Footer>
@@ -41,7 +41,7 @@ const NavbarDashboard = () =>{
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
-            <Navbar.Brand href="/dashboard"><i class="fas fa-video icona-titolo"></i> MovRecommend</Navbar.Brand>
+            <Navbar.Brand href="/dashboard"><i className="fas fa-video icona-titolo"></i> MovRecommend</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
@@ -70,7 +70,7 @@ const NavbarDashboard = () =>{
                     <Example/>
                 </Nav>
                 <Nav>
-                    <Nav.Link href="/utente"><i class="far fa-user-circle"></i></Nav.Link>
+                    <Nav.Link href="/utente"><i className="far fa-user-circle"></i></Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             </Container>
