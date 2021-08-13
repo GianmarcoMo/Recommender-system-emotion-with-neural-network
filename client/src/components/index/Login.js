@@ -9,15 +9,15 @@ const Login = () =>{
     let history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loginStatus, setLoginStatus] = useState(false);
+    //const [loginStatus, setLoginStatus] = useState(false);
 
     const login = () =>{
         Axios.post('http://localhost:3001/login', {
             email: email,
             password: password
         }).then(function (response) {
-            if(response.data){
-                history.push('/dashboard');
+            if(response.data === true || response.data.loggedIn === true){
+                history.push('/dashboard'); 
             }else{
                 alert("Email o password sbagliata.");
             }
@@ -28,11 +28,10 @@ const Login = () =>{
 
     useEffect(() => {
         Axios.get("http://localhost:3001/isLoggedIn").then((response)=>{
-            if(response.data){
-                setLoginStatus(current => !current);
-            }
-            if(response.data)
+            if(response.data === true || response.data.loggedIn === true)
                 history.push('/dashboard');
+            else 
+                history.push('/');
         });
 
         

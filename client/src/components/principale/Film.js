@@ -1,11 +1,28 @@
-import React from 'react';
+import {React, useState, useEffect} from 'react';
+import { useHistory } from "react-router-dom";
+
+import Axios from 'axios';
 
 import {Card, Button, Col, Row, Container} from 'react-bootstrap';
 
 /*<Container className='scelteFilm'>
                 <Scelte />
             </Container>*/
+
 const FilmShow = () =>{
+    Axios.defaults.withCredentials = true;
+
+    let history = useHistory();
+    useEffect(() => {
+        Axios.get("http://localhost:3001/isLoggedIn").then((response)=>{
+            console.log(response.data);
+            if(response.data === true || response.data.loggedIn === true)
+                history.push('/dashboard');
+            else 
+                history.push('/');
+        });
+    }, []);
+
     return(
         <div>
             <Container className='elencoFilm'>
