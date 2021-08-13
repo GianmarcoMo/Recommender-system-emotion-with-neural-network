@@ -14,7 +14,7 @@ const Registrati = () =>{
     const [cognome, setCognome] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loginStatus, setLoginStatus] = useState('');
+    const [loginStatus, setLoginStatus] = useState({logginIn: false});
 
     const registrati = () =>{
         Axios.post('http://localhost:3001/registrati', {
@@ -24,11 +24,11 @@ const Registrati = () =>{
             password: password
         }).then(function (response) {
             if(response.data){
+                history.push('/dashboard');
                 console.log("ok");
             }else{
                 alert("L'email utilizzata è esistente.");
             }
-            //history.push('/dashboard')   
         }).catch(function (error) {
             console.log(error);
         });
@@ -37,10 +37,13 @@ const Registrati = () =>{
     useEffect(() => {
         Axios.get("http://localhost:3001/isLoggedIn").then((response)=>{
             if(response.data){
-                console.log((response.data));
-                setLoginStatus((response.data));
+                setLoginStatus(current => !current);
             }
-        })
+            if(response.data)
+                history.push('/dashboard');
+        });
+
+        
     }, []);
     
     return (

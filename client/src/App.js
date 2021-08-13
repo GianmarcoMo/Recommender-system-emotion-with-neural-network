@@ -1,8 +1,8 @@
 import './general.css'
-import React from 'react';
+import {React, useState, useEffect} from 'react';
+import Axios from 'axios';
+import { useHistory } from 'react-router';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-
-// https://preview.themeforest.net/item/movflx-video-production-and-movie-html5-template/full_screen_preview/31469954?ref=digital_square
 
 //  COMPONENTI GENERALI
 import ContainerHomepage from './components/index/ContainerIndex';

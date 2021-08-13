@@ -31,9 +31,9 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(session({
-    key: "userEmail",
+    key: "userCookie",
     secret: process.env.SECRET_COOKIE,
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     cookie: {
         expires: 60*60*24,
@@ -65,7 +65,6 @@ app.post('/registrati', (req, res) => {
                         res.send(false);
                     } else {
                         if (result) {
-                            console.log(result);
                             req.session.user = emailUtente
                             res.send(req.session.user);
                         } else {
@@ -96,8 +95,8 @@ app.post('/login', (req, res) => {
                 bcrypt.compare(passUtente, result[0].password, (err, response) => {
                     if (response) {
                         req.session.user = result[0].email;
-                        //console.log(req.session.user);
-                        res.send(req.session.user);
+                        
+                        res.send(response);
                     } else {
                         res.send(response);
                     }
