@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 
 import { useHistory } from "react-router-dom";
 
@@ -9,9 +9,12 @@ import Axios from 'axios';
 
 
 const Login = () =>{
+    Axios.defaults.withCredentials = true;
+
     let history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loginStatus, setLoginStatus] = useState('');
 
     const login = () =>{
         Axios.post('http://localhost:3001/login', {
@@ -19,14 +22,25 @@ const Login = () =>{
             password: password
         }).then(function (response) {
             console.log(response);
-            if((response.data).message > 0 || response.data === true)
-                history.push('/dashboard');
+            if(response.data != 0 || response.data != false)
+                //history.push('/dashboard');
+                console.log("ok");
             else
                 alert("Email o password sbagliata.");
         }).catch(function (error) {
             console.log(error);
         });
     }
+
+    useEffect(() => {
+        Axios.get("http://localhost:3001/isLoggedIn").then((response)=>{
+            if(response.data){
+                console.log((response.data));
+                setLoginStatus((response.data));
+            }
+        })
+    }, []);
+
     return (
         <div>
             <div className="account-form">        

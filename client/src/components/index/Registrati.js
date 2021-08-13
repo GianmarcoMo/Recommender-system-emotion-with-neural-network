@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { useHistory } from "react-router-dom";
 
 
@@ -7,11 +7,14 @@ import {Form, Button} from 'react-bootstrap'
 import {Link} from 'react-router-dom';
 
 const Registrati = () =>{
+    Axios.defaults.withCredentials = true;
+
     let history = useHistory();
     const [nome, setNome] = useState('');
     const [cognome, setCognome] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loginStatus, setLoginStatus] = useState('');
 
     const registrati = () =>{
         Axios.post('http://localhost:3001/registrati', {
@@ -20,12 +23,25 @@ const Registrati = () =>{
             email: email,
             password: password
         }).then(function (response) {
-            //console.log(response);
-            history.push('/dashboard')   
+            if(response.data){
+                console.log("ok");
+            }else{
+                alert("L'email utilizzata è esistente.");
+            }
+            //history.push('/dashboard')   
         }).catch(function (error) {
             console.log(error);
         });
     }
+
+    useEffect(() => {
+        Axios.get("http://localhost:3001/isLoggedIn").then((response)=>{
+            if(response.data){
+                console.log((response.data));
+                setLoginStatus((response.data));
+            }
+        })
+    }, []);
     
     return (
         <div>
