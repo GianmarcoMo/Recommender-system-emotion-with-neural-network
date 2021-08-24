@@ -34,11 +34,8 @@ const Registrati = () =>{
 
     useEffect(() => {
         Axios.get("http://localhost:3001/isLoggedIn").then((response)=>{
-            console.log(response.data);
             if(response.data === true || response.data.loggedIn === true)
                 history.push('/dashboard');
-            else 
-                history.push('/');
         });
     }, []);
     

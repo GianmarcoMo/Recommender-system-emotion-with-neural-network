@@ -30,11 +30,7 @@ const Login = () =>{
         Axios.get("http://localhost:3001/isLoggedIn").then((response)=>{
             if(response.data === true || response.data.loggedIn === true)
                 history.push('/dashboard');
-            else 
-                history.push('/');
         });
-
-        
     }, []);
 
     return (
