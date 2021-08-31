@@ -78,13 +78,14 @@ def raccomandazione(root):
 
     result = pd.Series(data=np.array(weight), index=movies)
     result.sort_values(inplace=True, ascending=False)
+    
     return result;
 
 
 #   Recommender system con i grafi
 """
 Viene calcolato la matrice TF-IDF, per ogni film vengono presi i primi 5 film simili per descrizione
- e viene creato un nodo.
+e viene creato un nodo.
 """
 
 # Carichiamo i dati
@@ -105,13 +106,13 @@ df['countries'] = df['country'].apply(lambda l: [] if pd.isna(l) else [i.strip()
 start_time = time.time()
 text_content = df['description']
 vector = TfidfVectorizer(max_df=0.4,
-                         min_df=1,  # usiamo le parole che compaiono x volte
-                         stop_words='english',
-                         lowercase=True,
-                         use_idf=True,
-                         norm=u'l2',  # normalizzazione
-                         smooth_idf=True  # Preveniamo l'errore della divisione per zero
-                         )
+                        min_df=1,  # usiamo le parole che compaiono x volte
+                        stop_words='english',
+                        lowercase=True,
+                        use_idf=True,
+                        norm=u'l2',  # normalizzazione
+                        smooth_idf=True  # Preveniamo l'errore della divisione per zero
+                        )
 
 tfidf = vector.fit_transform(text_content)
 
@@ -126,7 +127,6 @@ request_transform = vector.transform(df['description'])
 # Colonne sottoposte al cluster basate sulla descrizione
 df['cluster'] = kmeans.predict(request_transform)
 
-# print(df['cluster'].value_counts().head())
 
 #   Creazione del grafo
 G = nx.Graph(label="MOVIE")
@@ -156,29 +156,30 @@ for i, rowi in df.iterrows():
     for element in indices:
         G.add_edge(snode, df['title'].loc[element], label="SIMILARITY")
 
-item = ""
+def input_utente():
+    item = ""
 
-while item != "esci":
-    print("")
-    print("Inserisci film o serie TV,\noppure scrivi 'esci' per uscire.")
-    item = input()
+    while item != "esci":
+        print("")
+        print("Inserisci film o serie TV,\noppure scrivi 'esci' per uscire.")
+        item = input()
 
-    if item != "esci":
-        """
-        try:
-            sub_graph = get_tutti_nodi(item)
-            disegna_grafo(sub_graph)
-        except:
-            print('Film non trovato')
-        """
-        result = raccomandazione(item)
+        if item != "esci":
+            """
+            try:
+                sub_graph = get_tutti_nodi(item)
+                disegna_grafo(sub_graph)
+            except:
+                print('Film non trovato')
+            """
+            result = raccomandazione(item)
 
-        if result.empty:
-            print("Nessun risultato trovato.")
-        else:
-            print("*" * 40 + "\n Racommandazioni per " + item + "\n" + "*" * 40)
-            print(result.head())
+            if result.empty:
+                print("Nessun risultato trovato.")
+            else:
+                print("*" * 40 + "\n Racommandazioni per " + item + "\n" + "*" * 40)
+                print(result.head())
 
 
-
+input_utente()
 exit()

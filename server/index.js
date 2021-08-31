@@ -1,6 +1,7 @@
 import express, { json, response } from "express";
 import { createConnection } from "mysql";
 import cors from "cors";
+import {film_nuovi} from './api/api.js'
 
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -114,6 +115,11 @@ app.get('/isLoggedIn', (req,res)=>{
     }else{
         res.send({logginIn: false});
     }
+});
+
+app.get('/testFilm', (req,res) =>{
+    film_nuovi() 
+        .then(response => res.send(response))
 });
 
 app.listen(3001, () => {
