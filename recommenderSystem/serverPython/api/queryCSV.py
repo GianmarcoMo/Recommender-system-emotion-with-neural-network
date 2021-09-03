@@ -10,7 +10,6 @@ netflix = pd.read_csv(path_file)
 
 
 def film_nuovi():
-    print("\n Film nuovi")
     #   Film nuovi
     df = netflix['release_year'].sort_values(ascending=False)[:10].to_frame()
     film_nuovi = list()

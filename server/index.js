@@ -1,7 +1,7 @@
-import express, { json, response } from "express";
+import express, { json } from "express";
 import { createConnection } from "mysql";
 import cors from "cors";
-import {film_nuovi} from './api/api.js'
+import {film_nuovi, dati_film} from './api/api.js'
 
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -117,9 +117,18 @@ app.get('/isLoggedIn', (req,res)=>{
     }
 });
 
-app.get('/testFilm', (req,res) =>{
-    film_nuovi() 
-        .then(response => res.send(response))
+app.get('/film/nuovi', (req,res) =>{
+    //  richista server python
+    film_nuovi()
+        .then((response) => {
+            //  richiesta API al sito online di film per la costruzione di oggetti
+            dati_film(response.film_nuovi)
+                .then(dati=>{
+                    //  Invio al client
+                    res.send(dati);
+                });
+        });
+    //  fine film_nuovi()
 });
 
 app.listen(3001, () => {
