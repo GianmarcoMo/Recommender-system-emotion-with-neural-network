@@ -1,7 +1,5 @@
 import './general.css'
-import {React, useState, useEffect} from 'react';
-import Axios from 'axios';
-import { useHistory } from 'react-router';
+import {React} from 'react';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 //  COMPONENTI GENERALI
@@ -11,11 +9,10 @@ import FooterHome from './components/index/FooterHomepage'
 import Login from './components/index/Login';
 import Registrati from './components/index/Registrati';
 
-import Film from './components/principale/Film';
 import ComeFunziona from './components/principale/ComeFunziona';
 import User from './components/principale/User';
 import UserCambia from './components/principale/UserCambia'
-
+import ListaFilm from './components/principale/ListaFilm';
 
 function App() {
   return (
@@ -37,7 +34,7 @@ function App() {
 
       <Switch>
         <Route path="/dashboard">
-          <Film />
+            <ListaFilm />
         </Route>
         <Route path="/come-funziona">
           <ComeFunziona/>

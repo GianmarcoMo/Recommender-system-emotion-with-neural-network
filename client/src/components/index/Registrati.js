@@ -37,7 +37,7 @@ const Registrati = () =>{
             if(response.data === true || response.data.loggedIn === true)
                 history.push('/dashboard');
         });
-    }, []);
+    });
     
     return (
         <div>

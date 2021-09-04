@@ -12,7 +12,6 @@ const NavbarDashboard = () =>{
 
     useEffect(() => {
         Axios.get("http://localhost:3001/isLoggedIn").then((response)=>{
-            console.log(response.data);
             if(response.data === true || response.data.loggedIn === true){
                 setLoginStatus(current => !current);
             }
