@@ -1,7 +1,7 @@
 import express, { json } from "express";
 import { createConnection } from "mysql";
 import cors from "cors";
-import {film_nuovi, dati_film} from './api/api.js'
+import {film_nuovi, dati_film, film_preferito} from './api/api.js'
 
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -129,6 +129,20 @@ app.get('/film/nuovi', (req,res) =>{
                 });
         });
     //  fine film_nuovi()
+});
+
+app.get('/film/:titolo', (req,res) =>{
+    //  richista server python
+    film_preferito(req.params.titolo)
+        .then((response) => {
+            //  richiesta API al sito online di film per la costruzione di oggetti
+            dati_film(response.film_raccomandati)
+                .then(dati=>{
+                    //  Invio al client
+                    res.send(dati);
+                });
+        });
+    //  fine film_preferito()
 });
 
 app.listen(3001, () => {

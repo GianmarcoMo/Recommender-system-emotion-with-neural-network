@@ -150,6 +150,10 @@ a:hover{
     color: #12151e;
 }
 
+.col-lg-2{
+    width: 185px;
+}
+
 
 /*CSS PER MOBILE*/
 @media only screen and (max-width: 768px) {

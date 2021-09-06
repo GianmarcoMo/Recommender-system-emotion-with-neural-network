@@ -49,7 +49,7 @@ const Login = () =>{
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password" onChange={(e) => {setPassword(e.target.value);}} required />
                 </Form.Group>
-                <Form.Group className="mb-3" contrcd olId="formBasicCheckbox">
+                <Form.Group className="mb-3" controlId  ="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Resta collegato" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">

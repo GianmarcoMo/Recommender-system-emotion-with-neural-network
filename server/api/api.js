@@ -26,6 +26,25 @@ export const film_nuovi = async () => {
     }
 }
 
+//  Effettua richiesta al server python per ricevere i film
+//  dopo aver interrogato il dataset
+export const film_preferito = async (titolo_film) => {
+    let response;
+
+    //  richiesta api
+    try {
+        response = await axios.get('http://127.0.0.1:5000/film?titolo='+titolo_film);
+        //  Se la richiesta è andata a buon fine
+        if(response.status === 200)
+            return response.data;
+        
+        return response.status;
+    } catch (e) {
+        // errore
+        throw new Error(e.message)
+    }
+}
+
 //  Utilizzando i titoli dei film
 //  utilizza le api di un altro sito e crea degli oggetti di film con locandina, titolo e trama.
 export const dati_film = async (lista_film) =>{
