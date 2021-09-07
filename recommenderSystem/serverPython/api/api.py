@@ -180,7 +180,7 @@ def api_id():
         titolo = request.args['titolo'];
 
     result = raccomandazione(titolo)
-    result = result.index.values.tolist()
+    result = qCSV.costruisci_film(result.index.values.tolist())
 
     # jsonify utilizzato per convertire il tipo dizionario
     # in json per poi restituirlo nella richiesta
@@ -188,8 +188,6 @@ def api_id():
 
 
 app.run()
-
-# https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask
 
 
 """

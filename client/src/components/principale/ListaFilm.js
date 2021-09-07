@@ -12,7 +12,7 @@ const ListaFilm = () =>{
     const [filmNuovi, setFilms] = useState();
     const [filmPreferitiPrimo, setPreferenzaPrimoFilm] = useState();
     
-    let titoloPreferenzaUno = 'Bad Boys II'
+    let titoloPreferenzaUno = 'The Ring'
 
 
     useEffect(() => {

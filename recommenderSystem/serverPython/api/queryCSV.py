@@ -5,9 +5,37 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# import api as edifFilms
+
 path_file = "../datasetProgetto/netflix_titles.csv"
 netflix = pd.read_csv(path_file)
 
+def costruisci_film(elencoFilm):
+    df_noedit = pd.read_csv('../datasetProgetto/netflix_titles.csv')
+    
+    df_noedit = df_noedit.drop('show_id', axis=1)
+    df_noedit = df_noedit.drop('director', axis=1)
+    df_noedit = df_noedit.drop('country', axis=1)
+    df_noedit = df_noedit.drop('cast', axis=1)
+    df_noedit = df_noedit.drop('date_added', axis=1)
+    df_noedit = df_noedit.drop('release_year', axis=1)
+    df_noedit = df_noedit.drop('rating', axis=1)
+    df_noedit = df_noedit.drop('duration', axis=1)
+    df_noedit = df_noedit.drop('description', axis=1)
+
+    film_cercati = list()
+
+    print('Stampa righe dei film cercati')
+    for i in range(10):
+        for k in range(len(df_noedit)):
+            if(df_noedit.values[k][1] == elencoFilm[i]):
+                film_cercati.append({df_noedit.values[k][1]: {df_noedit.values[k][0] : categoria_elemento(df_noedit.values[k][2])}})
+
+    return film_cercati
+
+def categoria_elemento(stringa_categorie):
+    array_parole = stringa_categorie.split(",")
+    return array_parole[0]
 
 def film_nuovi():
     #   Film nuovi
@@ -16,6 +44,8 @@ def film_nuovi():
 
     for i in df.index:
         film_nuovi.append(netflix['title'].iloc[i])
+
+    film_nuovi = costruisci_film(film_nuovi)
 
     return film_nuovi
 

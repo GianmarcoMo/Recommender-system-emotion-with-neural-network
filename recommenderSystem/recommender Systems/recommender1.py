@@ -78,11 +78,34 @@ def raccomandazione(root):
 
     result = pd.Series(data=np.array(weight), index=movies)
     result.sort_values(inplace=True, ascending=False)
-
-    print(result.index.values)
     
     return result;
 
+def costruisci_film(elencoFilm):
+    df_noedit = pd.read_csv('../datasetProgetto/netflix_titles.csv')
+    df_noedit = df_noedit.drop('show_id', axis=1)
+    df_noedit = df_noedit.drop('director', axis=1)
+    df_noedit = df_noedit.drop('country', axis=1)
+    df_noedit = df_noedit.drop('cast', axis=1)
+    df_noedit = df_noedit.drop('date_added', axis=1)
+    df_noedit = df_noedit.drop('release_year', axis=1)
+    df_noedit = df_noedit.drop('rating', axis=1)
+    df_noedit = df_noedit.drop('duration', axis=1)
+    df_noedit = df_noedit.drop('description', axis=1)
+
+    film_cercati = list()
+
+    print('Stampa righe dei film cercati')
+    for i in range(5):
+        for k in range(len(df_noedit)):
+            if(df_noedit.values[k][1] == elencoFilm[i]):
+                film_cercati.append({df_noedit.values[k][1]: {df_noedit.values[k][0] : categoria_elemento(df_noedit.values[k][2])}})
+
+    return film_cercati
+
+def categoria_elemento(stringa_categorie):
+    array_parole = stringa_categorie.split(",")
+    return array_parole[0]
 
 #   Recommender system con i grafi
 """
@@ -91,7 +114,7 @@ Viene calcolato la matrice TF-IDF, per ogni film vengono presi i primi 5 film si
 """
 
 # Carichiamo i dati
-df = pd.read_csv('datasetProgetto/netflix_titles.csv')
+df = pd.read_csv('../datasetProgetto/netflix_titles.csv')
 
 df["date_added"] = pd.to_datetime(df['date_added'])
 df['year'] = df['date_added'].dt.year
@@ -174,6 +197,7 @@ while item != "esci":
             print('Film non trovato')
         """
         result = raccomandazione(item)
+        costruisci_film(result.index.values.tolist())
 
         if result.empty:
             print("Nessun risultato trovato.")
@@ -183,3 +207,5 @@ while item != "esci":
 
 
 exit()
+
+# titolo-genere-tipo

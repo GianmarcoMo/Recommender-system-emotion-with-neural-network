@@ -1,6 +1,6 @@
 import {React} from 'react';
 
-import {Card, Button, Col, Row, Popover, OverlayTrigger} from 'react-bootstrap';
+import {Card, Button, Col, Row, Popover, OverlayTrigger, Badge} from 'react-bootstrap';
 
 const Film = ({films}) => {
     
@@ -29,11 +29,17 @@ const Film = ({films}) => {
                                     </Popover>
                                 }
                                 >
-                                <Button variant="primary">Info</Button>
+                                <Button variant="outline-warning">Info</Button>
                                 </OverlayTrigger>
                             ))}
+                            
                             </>
-
+                            <Button variant="outline-danger" className='btn-like'><i class="far fa-heart"></i></Button>{' '}
+                            <br></br><br></br>
+                            <Badge pill bg="warning" text="dark">
+                                {film.genere}
+                            </Badge>{' '}
+                            <Badge bg="secondary">{film.tipo}</Badge>{' '}
                         </Card.Body>
                     </Card>
                 </Col>
