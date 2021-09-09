@@ -1,7 +1,7 @@
 import express, { json } from "express";
 import { createConnection } from "mysql";
 import cors from "cors";
-import {film_nuovi, dati_film, film_preferito} from './api/api.js'
+import {film_nuovi, dati_film, film_preferito, dati_film_sql} from './api/api.js'
 
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -69,7 +69,6 @@ app.post('/registrati', (req, res) => {
                             req.session.user = emailUtente
                             res.send(req.session.user);
                         } else {
-                            console.log(result);
                             res.send(result);
                         }
                     }
@@ -131,7 +130,7 @@ app.get('/film/nuovi', (req,res) =>{
     //  fine film_nuovi()
 });
 
-app.get('/film/:titolo', (req,res) =>{
+app.get('/film/search/:titolo', (req,res) =>{
     //  richista server python
     film_preferito(req.params.titolo)
         .then((response) => {
@@ -144,6 +143,88 @@ app.get('/film/:titolo', (req,res) =>{
         });
     //  fine film_preferito()
 });
+
+app.get('/film/preferiti', (req, res) => {
+    db.query('SELECT titoloFilm, genereFilm, tipoFilm FROM filmPreferitiUtente WHERE emailUtente = ? ORDER BY dataAggiunta DESC;',
+        req.session.user,
+        (err, result) => {
+            if (err) {
+                res.send({
+                    err: err
+                });
+            }
+
+            if (result.length > 0) {
+                dati_film_sql(result)
+                    .then(dati=>{
+                        //  Invio al client
+                        res.send(dati);
+                    });
+            } else {
+                res.send(result);
+            }
+        }
+    );
+})
+
+app.post('/filmPreferito', (req,res) => {
+    let film = {
+        titolo: req.body.film,
+        genere: req.body.genere, 
+        tipo : req.body.tipo
+    }
+
+    //  Controlla se il film esiste già
+    db.query('SELECT titoloFilm FROM filmPreferitiUtente WHERE titoloFilm = ? AND emailUtente = ?;',
+        [film.titolo, req.session.user],
+        (err, result) => {
+            if (err) {
+                res.send({
+                    err: err
+                });
+            }
+
+            if (result.length > 0) {
+                db.query(' DELETE FROM filmPreferitiUtente WHERE titoloFilm = ? AND emailUtente = ?;',[film.titolo, req.session.user],
+                    (err, result) => {
+                        if (err) {
+                            res.send({
+                                err: err
+                            });
+                        }
+                        if (result) {
+                            res.send('ok')
+                        } else {
+                            res.send('no');
+                        }
+                    }
+                );
+                
+            
+            //  Se il risultato è 0, ovvero non esiste il film, lo inserisce
+            } else {
+                db.query('INSERT INTO filmPreferitiUtente (emailUtente, titoloFilm, genereFilm, tipoFilm, dataAggiunta) VALUES (?,?,?,?,?)',
+                    [req.session.user, film.titolo, film.genere, film.tipo, new Date()],
+                    (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.send(false);
+                        } else {
+                            if (result) {
+                                console.log(result);
+                                res.send(result);
+                            } else {
+                                console.log(result);
+                                res.send(result);
+                            }
+                        }
+                    }
+                );
+            }
+        }
+    );
+
+})
 
 app.listen(3001, () => {
     console.log('Server avviato sulla porta 3001');

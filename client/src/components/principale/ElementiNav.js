@@ -34,12 +34,7 @@ function Example() {
     );
 }
 
-const ElementiNav = () =>{
-    return (
-        <div>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="me-auto">
+/*
                     <NavDropdown title="Film" id="collasible-nav-dropdown">
                         <NavDropdown.Item href="/dashboard">Adolescenziale</NavDropdown.Item>
                         <NavDropdown.Item href="/dashboard">Animato</NavDropdown.Item>
@@ -59,10 +54,19 @@ const ElementiNav = () =>{
                         <NavDropdown.Item href="/dashboard">Thriller</NavDropdown.Item>
                     </NavDropdown>
                     <Nav.Link href="/popolari">Popolari</Nav.Link>
+*/
+
+const ElementiNav = () =>{
+    return (
+        <div>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="me-auto">
+
                     <Nav.Link href="/come-funziona">Come funziona?</Nav.Link>
                 </Nav>
                 <Nav>
-                    <Example/>
+                    {/*<Example/>*/}
                 </Nav>
                 <Nav>
                     <Nav.Link href="/utente"><i className="far fa-user-circle"></i></Nav.Link>

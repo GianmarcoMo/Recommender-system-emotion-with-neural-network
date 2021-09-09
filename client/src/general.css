@@ -72,7 +72,7 @@ a:hover{
 /*    CSS HOMEPAGE    */
 .hero-image {
     background-image: linear-gradient(rgba(24, 26, 40, 0.57), rgb(16, 21, 30)), url("./media/bg1.jpg");
-  
+
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -158,6 +158,11 @@ a:hover{
     margin-left: 10px;
     border-radius: 30px;
     border: 0px;
+}
+
+/*  CSS PER LOADING LOGO    */
+.loadingLogo{
+    text-align: center;
 }
 
 

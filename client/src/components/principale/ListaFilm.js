@@ -4,16 +4,18 @@ import { useHistory } from "react-router-dom";
 import {Container} from 'react-bootstrap';
 import Film from './Film';
 import axios from 'axios';
+import loadingFilm from './../../media/loadingFilms.gif';
+
 
 
 const ListaFilm = () =>{
     let history = useHistory();
+    let filmPreferitiLet = [];
+    const [ultimoCaricamento, setUltimoCaricamento] = useState(false);
 
     const [filmNuovi, setFilms] = useState();
-    const [filmPreferitiPrimo, setPreferenzaPrimoFilm] = useState();
-    
-    let titoloPreferenzaUno = 'The Ring'
-
+    const [filmPreferitiLista, setFilmPreferiti] = useState();
+    const [filmsPreferitiUno, setFilmsPreferitiUno] = useState([]);
 
     useEffect(() => {
         const fetchFilm = async () => {
@@ -23,13 +25,29 @@ const ListaFilm = () =>{
             if(rispostaLogin.data.loggedIn !== true){
                 history.push('/');
             }else{
+                //  richiesta per mostrare i film piaciuti 
+                const filmPreferiti = await axios('http://localhost:3001/film/preferiti');
+                setFilmPreferiti(filmPreferiti.data);
+                filmPreferitiLet = filmPreferiti.data;
+                
+
                 //  Richiesta per ricevere i nuovi film
                 const rispostaFilmNuovi = await axios('http://localhost:3001/film/nuovi');
                 setFilms(rispostaFilmNuovi.data);
 
                 //  Richiesta per ricevere i film raccomandati
-                const rispostaFilmPreferitoUno = await axios('http://localhost:3001/film/'+titoloPreferenzaUno);
-                setPreferenzaPrimoFilm(rispostaFilmPreferitoUno.data);
+                if(filmPreferitiLet.length > 0){
+                    for(let i= 0; i<4; i++){
+                        if(filmPreferitiLet[i] != null){
+                            const rispostaFilmPreferitoUno = await axios('http://localhost:3001/film/search/'+filmPreferitiLet[i].titolo);
+                            if(Array.isArray(rispostaFilmPreferitoUno.data))
+                                setFilmsPreferitiUno(filmsPreferitiUno => [...filmsPreferitiUno, ...rispostaFilmPreferitoUno.data]);
+                        }
+                    }
+
+                }
+
+                setUltimoCaricamento(true);
             }            
         }
 
@@ -41,14 +59,23 @@ const ListaFilm = () =>{
         <div>
             <Container className='elencoFilm'>
                 <Container>
-                    {!filmNuovi && <h1>Caricamento nuove uscite..</h1>}
-                    {filmNuovi && <h1>Nuove uscite...</h1>}
-                    {filmNuovi && <br></br>}
-                    {filmNuovi && <Film films={filmNuovi}/>}
+                    <div className='loadingLogo'>
+                        {!ultimoCaricamento && <h1>Caricamento titoli...</h1>} 
+                        {!ultimoCaricamento && <img src={loadingFilm} alt="loading..." />}
+                    </div>
                     
-                    {filmPreferitiPrimo && <h1>Perchè ti piace <b>{titoloPreferenzaUno}</b> </h1> }
-                    {filmPreferitiPrimo && <br></br>}
-                    {filmPreferitiPrimo && <Film films={filmPreferitiPrimo}/> }
+                    {ultimoCaricamento && <h1>I tuoi<b> titoli</b> </h1> }
+                    {ultimoCaricamento && <br></br>}
+                    {ultimoCaricamento && <Film films={filmPreferitiLista}/> }
+
+                    {ultimoCaricamento && <h1>Nuove uscite...</h1>}
+                    {ultimoCaricamento && <br></br>}
+                    {ultimoCaricamento && <Film films={filmNuovi}/>}
+                    
+
+                    {ultimoCaricamento && <h1>In base ai tuoi titoli <b>preferiti</b> </h1> }
+                    {ultimoCaricamento && <br></br>}
+                    {ultimoCaricamento && <Film films={filmsPreferitiUno}/> }
                 </Container>
             </Container>
         </div>

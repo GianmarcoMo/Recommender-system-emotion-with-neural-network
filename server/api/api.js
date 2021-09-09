@@ -58,14 +58,14 @@ export const dati_film = async (lista_film) =>{
         //console.log('Film: '+Object.keys(film)+' Tipo: '+ Object.keys(valore[0])+' Genere: '+Object.values(valore[0]));
     });   
 
-
+    let i = 0;
     //  Per ogni titolo di film invia una richiesta API
     for (const film of lista_film){
         let valore = Object.values(film);
 
         try {
             if(Object.keys(valore[0]) == 'TV Show'){
-                response = await axios.get('https://api.themoviedb.org/3/search/tv?api_key='+process.env.API_KEY_FILM+'&query=' + Object.keys(film)+'&language=it');
+                response = await axios.get('https://api.themoviedb.org/3/search/tv?api_key='+process.env.API_KEY_FILM+'&query=' + Object.keys(film));
 
                 //console.log("FILM: "+ film + " RISULTATI: "+ response.data.total_results);
                 //  Se esiste un risultato, lo registra
@@ -79,12 +79,14 @@ export const dati_film = async (lista_film) =>{
                         tipo: Object.keys(valore[0])
                     }
                     //  Se non esiste la locandina, non inserire il film
-                    if(response.data.results[0].poster_path != null)
+                    if(response.data.results[0].poster_path != null){
+                        i++;
                         films.push(filmObj);
+                    }
                 }
 
             }else{
-                response = await axios.get('https://api.themoviedb.org/3/search/movie?api_key='+process.env.API_KEY_FILM+'&query=' + Object.keys(film)+'&language=it');
+                response = await axios.get('https://api.themoviedb.org/3/search/movie?api_key='+process.env.API_KEY_FILM+'&query=' + Object.keys(film));
 
                 //console.log("FILM: "+ film + " RISULTATI: "+ response.data.total_results);
                 //  Se esiste un risultato, lo registra
@@ -99,10 +101,72 @@ export const dati_film = async (lista_film) =>{
                     }
 
                     //  Se non esiste la locandina, non inserire il films
-                    if(response.data.results[0].poster_path != null)
+                    if(response.data.results[0].poster_path != null){
+                        i++;
                         films.push(filmObj);
+                    }
                 }
 
+            }
+            if(i == 5)
+                break;
+        } catch (e) {
+            console.log(e.message);
+            return e;            
+        }        
+    };
+    //console.log(films);
+    return films;
+}
+
+export const dati_film_sql = async (lista_film) =>{
+    let response;
+    //  Array che conterrà gli oggetti dei film
+    const films = [];
+    
+    //  Per ogni titolo di film invia una richiesta API
+    for (const film of lista_film){
+        try {
+            if(film.tipoFilm == 'TV Show'){
+                response = await axios.get('https://api.themoviedb.org/3/search/tv?api_key='+process.env.API_KEY_FILM+'&query=' + film.titoloFilm);
+
+                //  Se esiste un risultato, lo registra
+                if(response.data.total_results != 0){
+                    //  Istanza con i dati dei film
+                    let filmObj = {
+                        locandina: "https://image.tmdb.org/t/p/w500"+response.data.results[0].poster_path,
+                        titolo : response.data.results[0].name,
+                        trama : response.data.results[0].overview,
+                        genere : film.genereFilm,
+                        tipo: film.tipoFilm
+                    }
+                    //  Se non esiste la locandina, non inserire il film
+                    if(response.data.results[0].poster_path != null){
+                        films.push(filmObj);
+                    }
+                        
+                }
+
+            }else{
+                response = await axios.get('https://api.themoviedb.org/3/search/movie?api_key='+process.env.API_KEY_FILM+'&query=' + film.titoloFilm);
+
+                //console.log("FILM: "+ film + " RISULTATI: "+ response.data.total_results);
+                //  Se esiste un risultato, lo registra
+                if(response.data.total_results != 0){
+                    //  Istanza con i dati dei film
+                    let filmObj = {
+                        locandina: "https://image.tmdb.org/t/p/w500"+response.data.results[0].poster_path,
+                        titolo : response.data.results[0].title,
+                        trama : response.data.results[0].overview,
+                        genere : film.genereFilm,
+                        tipo: film.tipoFilm
+                    }
+
+                    //  Se non esiste la locandina, non inserire il films
+                    if(response.data.results[0].poster_path != null){
+                        films.push(filmObj);
+                    }
+                }
             }
         } catch (e) {
             // catch error

@@ -1,8 +1,16 @@
+import axios from 'axios';
 import {React} from 'react';
 
 import {Card, Button, Col, Row, Popover, OverlayTrigger, Badge} from 'react-bootstrap';
 
 const Film = ({films}) => {
+    function saveFilm(titolo, genere, tipo){        
+        const inviaFilm = async () =>{
+            await axios.post('http://localhost:3001/filmPreferito', {film: titolo, genere: genere, tipo: tipo});
+        }
+
+        inviaFilm();
+    }
     
     return(
         <div>
@@ -34,7 +42,7 @@ const Film = ({films}) => {
                             ))}
                             
                             </>
-                            <Button variant="outline-danger" className='btn-like'><i class="far fa-heart"></i></Button>{' '}
+                            <Button variant="outline-danger" className='btn-like' value={film.titolo} onClick={() => saveFilm(film.titolo, film.genere[0], film.tipo[0])}><i className="far fa-heart"></i></Button>{' '}
                             <br></br><br></br>
                             <Badge pill bg="warning" text="dark">
                                 {film.genere}
