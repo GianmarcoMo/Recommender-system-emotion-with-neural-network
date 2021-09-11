@@ -25,6 +25,9 @@ const ListaFilm = () =>{
             if(rispostaLogin.data.loggedIn !== true){
                 history.push('/');
             }else{
+                const rispostaWebcam = await axios('http://localhost:3001/');
+                console.log(rispostaWebcam);
+                
                 //  richiesta per mostrare i film piaciuti 
                 const filmPreferiti = await axios('http://localhost:3001/film/preferiti');
                 setFilmPreferiti(filmPreferiti.data);
@@ -37,7 +40,7 @@ const ListaFilm = () =>{
 
                 //  Richiesta per ricevere i film raccomandati
                 if(filmPreferitiLet.length > 0){
-                    for(let i= 0; i<4; i++){
+                    for(let i= 0; i<8; i++){
                         if(filmPreferitiLet[i] != null){
                             const rispostaFilmPreferitoUno = await axios('http://localhost:3001/film/search/'+filmPreferitiLet[i].titolo);
                             if(Array.isArray(rispostaFilmPreferitoUno.data))

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import DescHomepage from './DescHomepage';
 
-const ContainerHomepage = ()=>{
+const ContainerIndex = ()=>{
     let history = useHistory();
     useEffect(() => {
         const controllaLogin = async () => {
@@ -28,4 +28,4 @@ const ContainerHomepage = ()=>{
     )
 }
 
-export default ContainerHomepage
+export default ContainerIndex

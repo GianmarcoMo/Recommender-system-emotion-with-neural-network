@@ -1,7 +1,9 @@
 import express, { json } from "express";
 import { createConnection } from "mysql";
 import cors from "cors";
-import {film_nuovi, dati_film, film_preferito, dati_film_sql} from './api/api.js'
+import {film_nuovi, dati_film, film_preferito, dati_film_sql} from './api/api.js';
+import { captureShot } from "./control/webcam.js";
+
 
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -15,6 +17,7 @@ if (result.error) {
 
 //  Per criptare le password da inserire nel datbase
 import bcrypt from 'bcrypt';
+
 const saltRounds = 10;
 
 const app = express();
@@ -77,6 +80,13 @@ app.post('/registrati', (req, res) => {
         }
     });
 })
+
+app.get('/', (req,res) => {
+    captureShot(req.session.user)
+        .then((response) => { 
+            res.send('<img src="${response}"/>')
+        })
+});
 
 app.post('/login', (req, res) => {
     const emailUtente = req.body.email;

@@ -3,7 +3,7 @@ import {React} from 'react';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 //  COMPONENTI GENERALI
-import ContainerHomepage from './components/index/ContainerIndex';
+import ContainerIndex from './components/index/ContainerIndex';
 import NavbarDashboard from './components/principale/NavbarDashboard';
 import FooterHome from './components/index/FooterHomepage'
 import Login from './components/index/Login';
@@ -21,7 +21,7 @@ function App() {
       <Switch>
         <Route exact path="/">
           <div className="homepage">
-            <ContainerHomepage />
+            <ContainerIndex />
           </div> 
         </Route>
         <Route path="/login">
