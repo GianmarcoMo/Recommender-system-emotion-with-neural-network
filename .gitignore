@@ -127,4 +127,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # dataset
-/recommenderSystem/riconoscimento_emozione/dataset
+/recommenderSystem/serverPython/api/dataset

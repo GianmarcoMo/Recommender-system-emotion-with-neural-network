@@ -34,7 +34,7 @@ export var captureShot = (nameUser) => {
             console.log(err);
         }
 
-        resolve('/path/to/image.jpg')
+        resolve(`${nameUser}.${options.output}`)
     }); 
  })
 

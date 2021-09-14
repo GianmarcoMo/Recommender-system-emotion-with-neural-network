@@ -2,6 +2,7 @@
 import axios from "axios";
 //  dotenv per prelevare la key dell'api 
 import dotenv from 'dotenv';
+import FormData from 'form-data'
 const result = dotenv.config();
 if (result.error) {
     throw result.error
@@ -175,4 +176,20 @@ export const dati_film_sql = async (lista_film) =>{
     };
     //console.log(films);
     return films;
+}
+
+export const invio_immagine = async (imgUtente) => {
+    let response;
+    //  richiesta api
+    try {
+        response = await axios.get('http://127.0.0.1:5000/emozione?nomeFile='+imgUtente);
+        //  Se la richiesta è andata a buon fine
+        if(response.status === 200)
+            return response.data;
+        
+        return response.status;
+    } catch (e) {
+        // errore
+        throw new Error(e.message)
+    }
 }

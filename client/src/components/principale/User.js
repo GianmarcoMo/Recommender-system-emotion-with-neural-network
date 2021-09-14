@@ -1,7 +1,35 @@
-import React from 'react';
-import { Form,Row, Col, Button,Container } from 'react-bootstrap';
+import {React, useEffect, useState} from 'react';
+import { useHistory } from "react-router-dom";
+import axios from 'axios';
+import { Form,Row, Col, Button,Container, Table} from 'react-bootstrap';
+import ListaFilmSetting from './ListaFilmSettings';
 
 const User = ()=>{
+    let history = useHistory();
+    const [filmPreferitiLista, setFilmPreferiti] = useState();
+    const [ultimoCaricamento, setUltimoCaricamento] = useState(false);
+    const [datiUtente, setDatiutente ] = useState();
+
+    useEffect(() => {
+        const fetchFilm = async () => {
+            //  Richiesta per vedere se l'utente ha effettuato il LOGIN
+            const rispostaLogin = await axios ('http://localhost:3001/isLoggedIn');
+
+            if(rispostaLogin.data.loggedIn !== true){
+                history.push('/');
+            }else{
+                
+                //  richiesta per mostrare i film piaciuti 
+                const filmPreferiti = await axios('http://localhost:3001/film/preferenze');
+                setFilmPreferiti(filmPreferiti.data);
+                
+                setUltimoCaricamento(true);
+            }            
+        }
+
+        fetchFilm();        
+    }, []);
+
     return (
         <Container>
             <Form action='/cambioDati'>
@@ -27,7 +55,18 @@ const User = ()=>{
                     </Form.Group>
                 </Row>
 
-                <Button variant="outline-warning" type="submit">
+                <Table striped bordered hover variant="dark">
+                    <thead>
+                        <tr>
+                            <th>Titolo</th>
+                            <th style={{'width': '70px'}}></th>
+                        </tr>
+                    </thead>
+                    {filmPreferitiLista && <ListaFilmSetting filmPreferitiLista={filmPreferitiLista}/>}
+                </Table>
+                <br></br>
+
+                <Button variant="outline-warning" disabled type="submit">
                     Cambia dati
                 </Button>
             </Form>

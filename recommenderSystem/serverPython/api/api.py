@@ -7,8 +7,13 @@ import pandas as pd
 import numpy as np
 import math as math
 import time
+import cv2
+
+from PIL import Image
+
 
 import queryCSV as qCSV
+import emotion as emotion
 
 plt.style.use('seaborn')
 plt.rcParams['figure.figsize'] = [14, 14]
@@ -166,9 +171,20 @@ for i, rowi in df.iterrows():
 #   ------------------------------------
 #   ----------- SERVER -----------------
 @app.route('/film/nuovi', methods=['GET'])
-def api_nuovi():
+def api_nuovi():    
     return jsonify({'film_nuovi': qCSV.film_nuovi()})
 
+@app.route('/emozione', methods=['GET'])
+def api_emozione_utente():
+    nomeFile = None
+    # Controlla se nell'URL c'è l'id
+    # Sennò restituisce errore
+    if 'nomeFile' not in request.args:
+        return "Errore: nessun nomeFile trovato nell'URL."
+    else:
+        nomeFile = request.args['nomeFile']
+
+    return jsonify({'emozioneUtente': emotion.predizione_emozione(nomeFile)})
 
 @app.route('/film', methods=['GET'])
 def api_id():
@@ -177,7 +193,7 @@ def api_id():
     if 'titolo' not in request.args:
         return "Errore: nessun titolo trovato nell'URL."
     else:
-        titolo = request.args['titolo'];
+        titolo = request.args['titolo']
 
     result = raccomandazione(titolo)
     result = qCSV.costruisci_film(result.index.values.tolist())
@@ -188,15 +204,3 @@ def api_id():
 
 
 app.run()
-
-
-"""
-    LINK PER LEL IMMAGINI API
-    https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg
-    
-    API PER SERIE TV 
-    https://api.themoviedb.org/3/search/tv?api_key=8c3c0c018c7ef62e92985a88d1724dda&query=Stranger Things&language=it
-
-    API PER FILM
-    https://api.themoviedb.org/3/search/movie?api_key=8c3c0c018c7ef62e92985a88d1724dda&query=Stranger Things
-"""

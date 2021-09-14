@@ -1,9 +1,8 @@
 import express, { json } from "express";
 import { createConnection } from "mysql";
 import cors from "cors";
-import {film_nuovi, dati_film, film_preferito, dati_film_sql} from './api/api.js';
+import {film_nuovi, dati_film, film_preferito, dati_film_sql, invio_immagine} from './api/api.js';
 import { captureShot } from "./control/webcam.js";
-
 
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -40,7 +39,7 @@ app.use(session({
     resave: true,
     saveUninitialized: false,
     cookie: {
-        expires: 60*60*24,
+        expires: 1000 * 60 * 15,
     }
 }))
 
@@ -82,10 +81,18 @@ app.post('/registrati', (req, res) => {
 })
 
 app.get('/', (req,res) => {
+    //  richista server python
     captureShot(req.session.user)
-        .then((response) => { 
-            res.send('<img src="${response}"/>')
-        })
+        .then((resFoto) => {
+            //  richiesta API al sito online di film per la costruzione di oggetti
+            (invio_immagine(resFoto))
+            .then(dati=>{
+                //  Invio al client
+                console.log(dati);
+                res.send(dati);
+            });
+        });
+//  fine film_nuovi()
 });
 
 app.post('/login', (req, res) => {
@@ -170,6 +177,26 @@ app.get('/film/preferiti', (req, res) => {
                         //  Invio al client
                         res.send(dati);
                     });
+            } else {
+                res.send(result);
+            }
+        }
+    );
+})
+
+app.get('/film/preferenze', (req,res) =>{
+    db.query('SELECT titoloFilm FROM filmPreferitiUtente WHERE emailUtente = ? ORDER BY dataAggiunta DESC;',
+        'prova@gmail.com',
+        (err, result) => {
+            if (err) {
+                res.send({
+                    err: err
+                });
+            }
+
+            if (result.length > 0) {
+                console.log(result);
+                res.send(result);
             } else {
                 res.send(result);
             }
