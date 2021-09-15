@@ -6,8 +6,6 @@ import Film from './Film';
 import axios from 'axios';
 import loadingFilm from './../../media/loadingFilms.gif';
 
-
-
 const ListaFilm = () =>{
     let history = useHistory();
     let filmPreferitiLet = [];
@@ -26,8 +24,14 @@ const ListaFilm = () =>{
             if(rispostaLogin.data.loggedIn !== true){
                 history.push('/');
             }else{
-                const rispostaWebcam = await axios('http://localhost:3001/');
-                setFilmUmore(rispostaWebcam.data);
+                const resEmozioneUtente = await axios('http://localhost:3001/emozioneUtente');
+                let emozioneUtente = resEmozioneUtente.data;
+                
+                if(emozioneUtente != null){
+                    const rispostaWebcam = await axios('http://localhost:3001/filmWebcam/'+emozioneUtente);
+                    setFilmUmore(rispostaWebcam.data);
+                }
+                
                 
                 //  richiesta per mostrare i film piaciuti 
                 const filmPreferiti = await axios('http://localhost:3001/film/preferiti');
@@ -51,6 +55,20 @@ const ListaFilm = () =>{
 
                 }
 
+                switch(emozioneUtente){
+                    case 'triste': 
+                        document.body.style.backgroundImage = "linear-gradient(to bottom right, #716F81, #12151e)";
+                        break;
+                    case 'felice':  
+                        document.body.style.backgroundImage = "linear-gradient(to bottom right, #B5DEFF, #12151e)";
+                        document.body.style.color = "#212529";
+                        break;
+                    case 'neutro': 
+                        document.body.style.backgroundImage = "linear-gradient(to bottom right, #082032, #12151e)";
+                        document.body.style.color = "#6c757d";
+                        break;
+                }
+                
                 setUltimoCaricamento(true);
             }            
         }

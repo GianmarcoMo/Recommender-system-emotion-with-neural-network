@@ -69,9 +69,9 @@ app.post('/registrati', (req, res) => {
                     } else {
                         if (result) {
                             req.session.user = emailUtente
-                            res.send(req.session.user);
+                            res.send(true);
                         } else {
-                            res.send(result);
+                            res.send(false);
                         }
                     }
                 }
@@ -80,29 +80,33 @@ app.post('/registrati', (req, res) => {
     });
 })
 
-app.get('/', (req,res) => {
+app.get('/emozioneUtente', (req,res) => {
     //  richista server python
     scattaFoto(req.session.user)
         .then((resFoto) => {
             //  invio immagine per essere analizzata
             (invio_immagine(resFoto))
                 .then(emozione=>{      
-                    if(emozione.emozioneUtente == "allontanati dal dispositivo"){
-                        res.send(null);
-                    }else{
-                        (film_emozioni(emozione.emozioneUtente))
-                            .then(film=>{
-                                //  richiesta API al sito online di film per la costruzione di oggetti
-                            dati_film(film.film_emozione)
-                                .then(dati=>{
-                                    //  Invio al client
-                                    res.send(dati);
-                                });
-                            });
-                    }                    
+                    res.send(emozione.emozioneUtente);         
                 });
         });
 //  fine scatta_foto()
+});
+
+app.get('/filmWebcam/:emozione', (req,res) => {
+    if(req.params.emozione == "allontanati dal dispositivo"){
+        res.send(null);
+    }else{
+        (film_emozioni(req.params.emozione))
+            .then(film=>{
+                //  richiesta API al sito online di film per la costruzione di oggetti
+            dati_film(film.film_emozione)
+                .then(dati=>{
+                    //  Invio al client
+                    res.send(dati);
+                });
+            });
+    }
 });
 
 app.post('/login', (req, res) => {
@@ -215,7 +219,7 @@ app.get('/film/preferiti', (req, res) => {
 
 app.get('/film/preferenze', (req,res) =>{
     db.query('SELECT titoloFilm FROM filmPreferitiUtente WHERE emailUtente = ? ORDER BY dataAggiunta DESC;',
-        'prova@gmail.com',
+        req.session.user,
         (err, result) => {
             if (err) {
                 res.send({

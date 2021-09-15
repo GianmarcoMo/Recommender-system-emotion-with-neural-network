@@ -28,7 +28,7 @@ const User = ()=>{
         }
 
         fetchFilm();        
-    }, []);
+    });
 
     return (
         <Container>

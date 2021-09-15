@@ -11,39 +11,40 @@ import Registrati from './components/index/Registrati';
 
 import ComeFunziona from './components/principale/ComeFunziona';
 import User from './components/principale/User';
-import UserCambia from './components/principale/UserCambia'
 import ListaFilm from './components/principale/ListaFilm';
 
 function App() {
   return (
     <Router>
-      <NavbarDashboard />
       <Switch>
         <Route exact path="/">
           <div className="homepage">
+            <NavbarDashboard />
             <ContainerIndex />
           </div> 
         </Route>
         <Route path="/login">
+          <NavbarDashboard />
           <Login/>
         </Route>
         <Route path="/registrati">
+          <NavbarDashboard />
           <Registrati/>
         </Route>
       </Switch>
 
       <Switch>
         <Route path="/dashboard">
-            <ListaFilm />
+          <NavbarDashboard />
+          <ListaFilm />
         </Route>
         <Route path="/come-funziona">
+          <NavbarDashboard />
           <ComeFunziona/>
         </Route>
         <Route path='/utente'>
+          <NavbarDashboard />
           <User/>
-        </Route>
-        <Route path='/cambioDati'>
-          <UserCambia/>
         </Route>
       </Switch>
       <FooterHome /> 

@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from 'react';
+import {React, useEffect} from 'react';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
 
@@ -11,13 +11,13 @@ const ContainerIndex = ()=>{
             //  Richiesta per vedere se l'utente ha effettuato il LOGIN
             const rispostaLogin = await axios ('http://localhost:3001/isLoggedIn');
 
-            if(rispostaLogin.data.loggedIn == true){
+            if(rispostaLogin.data.loggedIn === true){
                 history.push('/dashboard');
             }
         }
 
         controllaLogin();        
-    }, []);
+    });
 
     return (
         <div className="hero-image">

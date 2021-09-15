@@ -22,6 +22,7 @@ const Registrati = () =>{
             email: email,
             password: password
         }).then(function (response) {
+            console.log(response);
             if(response.data === true || response.data.loggedIn === true){
                 history.push('/dashboard');
             }else{
