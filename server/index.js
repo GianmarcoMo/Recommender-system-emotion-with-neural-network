@@ -1,8 +1,8 @@
 import express, { json } from "express";
 import { createConnection } from "mysql";
 import cors from "cors";
-import {film_nuovi, dati_film, film_preferito, dati_film_sql, invio_immagine} from './api/api.js';
-import { captureShot } from "./control/webcam.js";
+import {film_nuovi, dati_film, film_preferito, dati_film_sql, invio_immagine, film_emozioni} from './api/api.js';
+import { scattaFoto } from "./control/webcam.js";
 
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -82,17 +82,27 @@ app.post('/registrati', (req, res) => {
 
 app.get('/', (req,res) => {
     //  richista server python
-    captureShot(req.session.user)
+    scattaFoto(req.session.user)
         .then((resFoto) => {
-            //  richiesta API al sito online di film per la costruzione di oggetti
+            //  invio immagine per essere analizzata
             (invio_immagine(resFoto))
-            .then(dati=>{
-                //  Invio al client
-                console.log(dati);
-                res.send(dati);
-            });
+                .then(emozione=>{      
+                    if(emozione.emozioneUtente == "allontanati dal dispositivo"){
+                        res.send(null);
+                    }else{
+                        (film_emozioni(emozione.emozioneUtente))
+                            .then(film=>{
+                                //  richiesta API al sito online di film per la costruzione di oggetti
+                            dati_film(film.film_emozione)
+                                .then(dati=>{
+                                    //  Invio al client
+                                    res.send(dati);
+                                });
+                            });
+                    }                    
+                });
         });
-//  fine film_nuovi()
+//  fine scatta_foto()
 });
 
 app.post('/login', (req, res) => {
@@ -161,6 +171,25 @@ app.get('/film/search/:titolo', (req,res) =>{
     //  fine film_preferito()
 });
 
+app.get('/datiUtente', (req,res) =>{
+    db.query('SELECT nome,cognome,email FROM utente WHERE email = ?;',
+        req.session.user,
+        (err, result) => {
+            if (err) {
+                res.send({
+                    err: err
+                });
+            }
+
+            if (result.length > 0) {
+                res.send(result)
+            } else {
+                res.send(result);
+            }
+        }
+    );
+})
+
 app.get('/film/preferiti', (req, res) => {
     db.query('SELECT titoloFilm, genereFilm, tipoFilm FROM filmPreferitiUtente WHERE emailUtente = ? ORDER BY dataAggiunta DESC;',
         req.session.user,
@@ -195,7 +224,6 @@ app.get('/film/preferenze', (req,res) =>{
             }
 
             if (result.length > 0) {
-                console.log(result);
                 res.send(result);
             } else {
                 res.send(result);

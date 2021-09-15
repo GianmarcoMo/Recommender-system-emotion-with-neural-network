@@ -2,7 +2,6 @@
 import axios from "axios";
 //  dotenv per prelevare la key dell'api 
 import dotenv from 'dotenv';
-import FormData from 'form-data'
 const result = dotenv.config();
 if (result.error) {
     throw result.error
@@ -41,6 +40,22 @@ export const film_preferito = async (titolo_film) => {
         
         return response.status;
     } catch (e) {
+        // errore
+        throw new Error(e.message)
+    }
+}
+
+export const film_emozioni = async (emozione) => {
+    let response;
+
+    try {
+        response = await axios.get('http://127.0.0.1:5000/filmemo?emozione='+emozione);
+        //  Se la richiesta è andata a buon fine
+        if(response.status === 200)
+            return response.data;
+        
+        return response.status;
+    }catch (e) {
         // errore
         throw new Error(e.message)
     }
@@ -109,7 +124,7 @@ export const dati_film = async (lista_film) =>{
                 }
 
             }
-            if(i == 5)
+            if(i == 10)
                 break;
         } catch (e) {
             console.log(e.message);

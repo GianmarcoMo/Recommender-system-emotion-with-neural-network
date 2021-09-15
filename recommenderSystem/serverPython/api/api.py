@@ -202,5 +202,17 @@ def api_id():
     # in json per poi restituirlo nella richiesta
     return jsonify({'film_raccomandati': result[:10]}) # [:10] i primi 10 elementi
 
+@app.route('/filmemo', methods=['GET'])
+def emozione_film():
+    # Controlla se nell'URL c'è l'id
+    # Sennò restituisce errore
+    if 'emozione' not in request.args:
+        return "Errore: nessun titolo trovato nell'URL."
+    else:
+        emozione = request.args['emozione']
+
+    # jsonify utilizzato per convertire il tipo dizionario
+    # in json per poi restituirlo nella richiesta
+    return jsonify({'film_emozione': qCSV.film_base_emozione(emozione)}) 
 
 app.run()

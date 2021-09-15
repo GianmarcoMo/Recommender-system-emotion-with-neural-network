@@ -16,6 +16,7 @@ const ListaFilm = () =>{
     const [filmNuovi, setFilms] = useState();
     const [filmPreferitiLista, setFilmPreferiti] = useState();
     const [filmsPreferitiUno, setFilmsPreferitiUno] = useState([]);
+    const [filmUmore, setFilmUmore] = useState();
 
     useEffect(() => {
         const fetchFilm = async () => {
@@ -26,7 +27,7 @@ const ListaFilm = () =>{
                 history.push('/');
             }else{
                 const rispostaWebcam = await axios('http://localhost:3001/');
-                console.log(rispostaWebcam);
+                setFilmUmore(rispostaWebcam.data);
                 
                 //  richiesta per mostrare i film piaciuti 
                 const filmPreferiti = await axios('http://localhost:3001/film/preferiti');
@@ -66,8 +67,12 @@ const ListaFilm = () =>{
                         {!ultimoCaricamento && <h1>Caricamento titoli...</h1>} 
                         {!ultimoCaricamento && <img src={loadingFilm} alt="loading..." />}
                     </div>
+
+                    {ultimoCaricamento && filmUmore && <h1>In base alla tua<b> emozione</b> </h1> }
+                    {ultimoCaricamento && filmUmore && <br></br>}
+                    {ultimoCaricamento && filmUmore && <Film films={filmUmore}/> }
                     
-                    {ultimoCaricamento && <h1>I tuoi<b> titoli</b> </h1> }
+                    {ultimoCaricamento && <h1>I tuoi titoli <b> preferiti</b> </h1> }
                     {ultimoCaricamento && <br></br>}
                     {ultimoCaricamento && <Film films={filmPreferitiLista}/> }
 

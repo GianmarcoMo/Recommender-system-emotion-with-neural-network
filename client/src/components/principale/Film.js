@@ -15,7 +15,7 @@ const Film = ({films}) => {
     return(
         <div>
             <Row>
-            {films.map((film) => (                
+            {films.map((film) => (   
                 <Col className="filmItem" xs lg="2" key={film.titolo}>
                     <Card style={{ width: '18rem' }}>
                         <Card.Img variant="top" src={film.locandina} />

@@ -82,7 +82,8 @@ def sposta_immagine(directoryImmagine):
 def elimina_immagini(nomeFileOriginale, nomeFileModificato):
     import os
     os.remove(nomeFileOriginale) 
-    os.remove(nomeFileModificato) 
+    if os.path.isfile(nomeFileModificato):
+        os.remove(nomeFileModificato) 
 
 def predizione_emozione(fotoUtente):
     import os.path

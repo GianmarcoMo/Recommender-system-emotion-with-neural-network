@@ -18,7 +18,7 @@ var options = {
 var webcam = nodeWebCam.create(options);
 
 // capture function that snaps <amount> images and saves them with the given name in a folder of the same name
-export var captureShot = (nameUser) => {
+export var scattaFoto = (nameUser) => {
  // Make sure this returns a real url to an image.
  return new Promise(resolve => {
     var path = `./images/`;

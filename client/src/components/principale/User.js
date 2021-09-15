@@ -7,7 +7,6 @@ import ListaFilmSetting from './ListaFilmSettings';
 const User = ()=>{
     let history = useHistory();
     const [filmPreferitiLista, setFilmPreferiti] = useState();
-    const [ultimoCaricamento, setUltimoCaricamento] = useState(false);
     const [datiUtente, setDatiutente ] = useState();
 
     useEffect(() => {
@@ -18,13 +17,14 @@ const User = ()=>{
             if(rispostaLogin.data.loggedIn !== true){
                 history.push('/');
             }else{
-                
                 //  richiesta per mostrare i film piaciuti 
                 const filmPreferiti = await axios('http://localhost:3001/film/preferenze');
                 setFilmPreferiti(filmPreferiti.data);
-                
-                setUltimoCaricamento(true);
-            }            
+
+                const resDatiUtente = await axios('http://localhost:3001/datiUtente');
+                setDatiutente(resDatiUtente.data[0]);
+
+            }          
         }
 
         fetchFilm();        
@@ -32,29 +32,30 @@ const User = ()=>{
 
     return (
         <Container>
-            <Form action='/cambioDati'>
+            {datiUtente && <Form action='/cambioDati'>
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridNomeCognome">
                         <Form.Label>Nome</Form.Label>
-                        <Form.Control type="text" disabled value='NomeProva'/>
+                        <Form.Control type="text" disabled value={datiUtente.nome}/>
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridNomeCognome">
                         <Form.Label>Cognome</Form.Label>
-                        <Form.Control type="text" disabled value='CognomeProva'/>
+                        <Form.Control type="text" disabled value={datiUtente.cognome}/>
                     </Form.Group>
                 </Row>
 
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridEmail">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" disabled value='emailProva@esempio.com'/>
+                        <Form.Control type="email" disabled value={datiUtente.email}/> 
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridEmail">
                         <Form.Label>Tipo Account</Form.Label>
-                        <Form.Control type="text" disabled value='Normale'/>
+                        <Form.Control type="text" disabled value='Normale'/> 
                     </Form.Group>
                 </Row>
 
+                <h3>I tuoi titoli preferiti </h3>
                 <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>
@@ -62,14 +63,14 @@ const User = ()=>{
                             <th style={{'width': '70px'}}></th>
                         </tr>
                     </thead>
-                    {filmPreferitiLista && <ListaFilmSetting filmPreferitiLista={filmPreferitiLista}/>}
+                    <ListaFilmSetting filmPreferitiLista={filmPreferitiLista}/>
                 </Table>
                 <br></br>
 
                 <Button variant="outline-warning" disabled type="submit">
                     Cambia dati
                 </Button>
-            </Form>
+            </Form> }
         </Container>
     );
 }
