@@ -127,6 +127,10 @@ a:hover{
     margin-top: 3%;
 }
 
+.modal-body, .modal-title{
+    color: rgb(16, 21, 30);
+}
+
 /*  CSS PER FILM    */
 .filmItem{
     margin-right: 10%;
@@ -159,6 +163,9 @@ a:hover{
     border: 0px;
 }
 
+.btn-trailer{
+    margin-left: 15px;
+}
 /*  CSS PER LOADING LOGO    */
 .loadingLogo{
     text-align: center;

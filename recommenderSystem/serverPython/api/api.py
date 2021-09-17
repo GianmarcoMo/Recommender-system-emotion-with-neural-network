@@ -173,6 +173,7 @@ for i, rowi in df.iterrows():
 @app.route('/film/nuovi', methods=['GET'])
 def api_nuovi():    
     return jsonify({'film_nuovi': qCSV.film_nuovi()})
+    
 
 @app.route('/emozione', methods=['GET'])
 def api_emozione_utente():

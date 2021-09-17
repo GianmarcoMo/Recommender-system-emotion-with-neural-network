@@ -1,7 +1,7 @@
 import {React, useEffect, useState} from 'react';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
-import { Form,Row, Col, Button,Container, Table} from 'react-bootstrap';
+import { Form,Row, Col, Container, Table} from 'react-bootstrap';
 import ListaFilmSetting from './ListaFilmSettings';
 
 const User = ()=>{
@@ -66,10 +66,6 @@ const User = ()=>{
                     <ListaFilmSetting filmPreferitiLista={filmPreferitiLista}/>
                 </Table>
                 <br></br>
-
-                <Button variant="outline-warning" disabled type="submit">
-                    Cambia dati
-                </Button>
             </Form> }
         </Container>
     );

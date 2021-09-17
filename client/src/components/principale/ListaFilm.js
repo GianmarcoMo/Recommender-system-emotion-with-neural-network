@@ -27,7 +27,7 @@ const ListaFilm = () =>{
                 const resEmozioneUtente = await axios('http://localhost:3001/emozioneUtente');
                 let emozioneUtente = resEmozioneUtente.data;
                 
-                if(emozioneUtente != null){
+                if(emozioneUtente !== null && emozioneUtente !== 'neutro'){
                     const rispostaWebcam = await axios('http://localhost:3001/filmWebcam/'+emozioneUtente);
                     setFilmUmore(rispostaWebcam.data);
                 }
@@ -47,9 +47,12 @@ const ListaFilm = () =>{
                 if(filmPreferitiLet.length > 0){
                     for(let i= 0; i<8; i++){
                         if(filmPreferitiLet[i] != null){
-                            const rispostaFilmPreferitoUno = await axios('http://localhost:3001/film/search/'+filmPreferitiLet[i].titolo);
-                            if(Array.isArray(rispostaFilmPreferitoUno.data))
-                                setFilmsPreferitiUno(filmsPreferitiUno => [...filmsPreferitiUno, ...rispostaFilmPreferitoUno.data]);
+                            if(filmPreferitiLet[i].titolo !== undefined){
+                                const rispostaFilmPreferitoUno = await axios('http://localhost:3001/film/search/'+filmPreferitiLet[i].titolo);
+                                if(Array.isArray(rispostaFilmPreferitoUno.data))
+                                    setFilmsPreferitiUno(filmsPreferitiUno => [...filmsPreferitiUno, ...rispostaFilmPreferitoUno.data]);
+                            }
+                            
                         }
                     }
 
@@ -81,6 +84,7 @@ const ListaFilm = () =>{
         <div>
             <Container className='elencoFilm'>
                 <Container>
+                
                     <div className='loadingLogo'>
                         {!ultimoCaricamento && <h1>Caricamento titoli...</h1>} 
                         {!ultimoCaricamento && <img src={loadingFilm} alt="loading..." />}
@@ -90,18 +94,18 @@ const ListaFilm = () =>{
                     {ultimoCaricamento && filmUmore && <br></br>}
                     {ultimoCaricamento && filmUmore && <Film films={filmUmore}/> }
                     
-                    {ultimoCaricamento && <h1>I tuoi titoli <b> preferiti</b> </h1> }
-                    {ultimoCaricamento && <br></br>}
-                    {ultimoCaricamento && <Film films={filmPreferitiLista}/> }
+                    {ultimoCaricamento && filmPreferitiLista && <h1>I tuoi titoli <b> preferiti</b> </h1> }
+                    {ultimoCaricamento && filmPreferitiLista && <br></br>}
+                    {ultimoCaricamento && filmPreferitiLista && <Film films={filmPreferitiLista}/> }
 
                     {ultimoCaricamento && <h1>Nuove uscite...</h1>}
                     {ultimoCaricamento && <br></br>}
                     {ultimoCaricamento && <Film films={filmNuovi}/>}
                     
 
-                    {ultimoCaricamento && <h1>In base ai tuoi titoli <b>preferiti</b> </h1> }
-                    {ultimoCaricamento && <br></br>}
-                    {ultimoCaricamento && <Film films={filmsPreferitiUno}/> }
+                    {ultimoCaricamento && filmsPreferitiUno && <h1>In base ai tuoi titoli <b>preferiti</b> </h1> }
+                    {ultimoCaricamento && filmsPreferitiUno && <br></br>}
+                    {ultimoCaricamento && filmsPreferitiUno && <Film films={filmsPreferitiUno}/> }
                 </Container>
             </Container>
         </div>

@@ -64,15 +64,9 @@ export const film_emozioni = async (emozione) => {
 //  Utilizzando i titoli dei film
 //  utilizza le api di un altro sito e crea degli oggetti di film con locandina, titolo e trama.
 export const dati_film = async (lista_film) =>{
-    let response;
+    let response, responseTrailer;
     //  Array che conterrà gli oggetti dei film
     const films = [];
-
-    lista_film.forEach(film => {
-        let valore = Object.values(film);
-
-        //console.log('Film: '+Object.keys(film)+' Tipo: '+ Object.keys(valore[0])+' Genere: '+Object.values(valore[0]));
-    });   
 
     let i = 0;
     //  Per ogni titolo di film invia una richiesta API
@@ -85,44 +79,53 @@ export const dati_film = async (lista_film) =>{
 
                 //console.log("FILM: "+ film + " RISULTATI: "+ response.data.total_results);
                 //  Se esiste un risultato, lo registra
-                if(response.data.total_results != 0){
-                    //  Istanza con i dati dei film
-                    let filmObj = {
-                        locandina: "https://image.tmdb.org/t/p/w500"+response.data.results[0].poster_path,
-                        titolo : response.data.results[0].name,
-                        trama : response.data.results[0].overview,
-                        genere : Object.values(valore[0]),
-                        tipo: Object.keys(valore[0])
-                    }
-                    //  Se non esiste la locandina, non inserire il film
-                    if(response.data.results[0].poster_path != null){
+                if(response.data.total_results != 0 && response.data.results[0].poster_path != null){
+                    //  Effettua la richiesta per il trailer del titolo
+                    responseTrailer = await axios.get('https://api.themoviedb.org/3/tv/'+response.data.results[0].id+'/videos?api_key='+process.env.API_KEY_FILM+'&language=en-US');
+
+                    if(responseTrailer.data.results.length != 0){
+                        //  Istanza con i dati dei film
+                        let filmObj = {
+                            locandina: "https://image.tmdb.org/t/p/w500"+response.data.results[0].poster_path,
+                            titolo : response.data.results[0].name,
+                            trama : response.data.results[0].overview,
+                            genere : Object.values(valore[0]),
+                            tipo: Object.keys(valore[0]),
+                            trailer: 'https://www.youtube.com/embed/'+responseTrailer.data.results[0].key
+                        }
                         i++;
                         films.push(filmObj);
+                        /*
+                        //  Se non esiste la locandina, non inserire il film
+                        if(response.data.results[0].poster_path != null){
+                            i++;
+                            films.push(filmObj);
+                        }*/
                     }
                 }
 
             }else{
                 response = await axios.get('https://api.themoviedb.org/3/search/movie?api_key='+process.env.API_KEY_FILM+'&query=' + Object.keys(film));
 
-                //console.log("FILM: "+ film + " RISULTATI: "+ response.data.total_results);
                 //  Se esiste un risultato, lo registra
-                if(response.data.total_results != 0){
-                    //  Istanza con i dati dei film
-                    let filmObj = {
-                        locandina: "https://image.tmdb.org/t/p/w500"+response.data.results[0].poster_path,
-                        titolo : response.data.results[0].title,
-                        trama : response.data.results[0].overview,
-                        genere : Object.values(valore[0]),
-                        tipo : Object.keys(valore[0])
-                    }
+                if(response.data.total_results != 0 && response.data.results[0].poster_path != null){
+                    //  Effettua la richiesta per il trailer del titolo
+                    responseTrailer = await axios.get('https://api.themoviedb.org/3/movie/'+response.data.results[0].id+'/videos?api_key='+process.env.API_KEY_FILM+'&language=en-US');
 
-                    //  Se non esiste la locandina, non inserire il films
-                    if(response.data.results[0].poster_path != null){
+                    if(responseTrailer.data.results.length != 0){
+                        //  Istanza con i dati dei film
+                        let filmObj = {
+                            locandina: "https://image.tmdb.org/t/p/w500"+response.data.results[0].poster_path,
+                            titolo : response.data.results[0].title,
+                            trama : response.data.results[0].overview,
+                            genere : Object.values(valore[0]),
+                            tipo: Object.keys(valore[0]),
+                            trailer: 'https://www.youtube.com/embed/'+responseTrailer.data.results[0].key
+                        }
                         i++;
                         films.push(filmObj);
                     }
                 }
-
             }
             if(i == 10)
                 break;
@@ -131,12 +134,11 @@ export const dati_film = async (lista_film) =>{
             return e;            
         }        
     };
-    //console.log(films);
     return films;
 }
 
 export const dati_film_sql = async (lista_film) =>{
-    let response;
+    let response, responseTrailer;
     //  Array che conterrà gli oggetti dei film
     const films = [];
     
@@ -147,20 +149,22 @@ export const dati_film_sql = async (lista_film) =>{
                 response = await axios.get('https://api.themoviedb.org/3/search/tv?api_key='+process.env.API_KEY_FILM+'&query=' + film.titoloFilm);
 
                 //  Se esiste un risultato, lo registra
-                if(response.data.total_results != 0){
-                    //  Istanza con i dati dei film
-                    let filmObj = {
-                        locandina: "https://image.tmdb.org/t/p/w500"+response.data.results[0].poster_path,
-                        titolo : response.data.results[0].name,
-                        trama : response.data.results[0].overview,
-                        genere : film.genereFilm,
-                        tipo: film.tipoFilm
-                    }
-                    //  Se non esiste la locandina, non inserire il film
-                    if(response.data.results[0].poster_path != null){
+                if(response.data.total_results != 0 && response.data.results[0].poster_path != null){
+                    //  Effettua la richiesta per il trailer del titolo
+                    responseTrailer = await axios.get('https://api.themoviedb.org/3/tv/'+response.data.results[0].id+'/videos?api_key='+process.env.API_KEY_FILM+'&language=en-US');
+
+                    if(responseTrailer.data.results.length != 0){
+                        //  Istanza con i dati dei film
+                        let filmObj = {
+                            locandina: "https://image.tmdb.org/t/p/w500"+response.data.results[0].poster_path,
+                            titolo : film.titoloFilm,
+                            trama : response.data.results[0].overview,
+                            genere : film.genereFilm,
+                            tipo: film.tipoFilm,
+                            trailer: 'https://www.youtube.com/embed/'+responseTrailer.data.results[0].key
+                        }
                         films.push(filmObj);
                     }
-                        
                 }
 
             }else{
@@ -168,18 +172,20 @@ export const dati_film_sql = async (lista_film) =>{
 
                 //console.log("FILM: "+ film + " RISULTATI: "+ response.data.total_results);
                 //  Se esiste un risultato, lo registra
-                if(response.data.total_results != 0){
-                    //  Istanza con i dati dei film
-                    let filmObj = {
-                        locandina: "https://image.tmdb.org/t/p/w500"+response.data.results[0].poster_path,
-                        titolo : response.data.results[0].title,
-                        trama : response.data.results[0].overview,
-                        genere : film.genereFilm,
-                        tipo: film.tipoFilm
-                    }
+                if(response.data.total_results != 0 && response.data.results[0].poster_path != null){
+                    //  Effettua la richiesta per il trailer del titolo
+                    responseTrailer = await axios.get('https://api.themoviedb.org/3/movie/'+response.data.results[0].id+'/videos?api_key='+process.env.API_KEY_FILM+'&language=en-US');
 
-                    //  Se non esiste la locandina, non inserire il films
-                    if(response.data.results[0].poster_path != null){
+                    if(responseTrailer.data.results.length != 0){
+                        //  Istanza con i dati dei film
+                        let filmObj = {
+                            locandina: "https://image.tmdb.org/t/p/w500"+response.data.results[0].poster_path,
+                            titolo : film.titoloFilm,
+                            trama : response.data.results[0].overview,
+                            genere : film.genereFilm,
+                            tipo: film.tipoFilm,
+                            trailer: 'https://www.youtube.com/embed/'+responseTrailer.data.results[0].key
+                        }
                         films.push(filmObj);
                     }
                 }
@@ -189,7 +195,6 @@ export const dati_film_sql = async (lista_film) =>{
             throw new Error(e.message)
         }        
     };
-    //console.log(films);
     return films;
 }
 

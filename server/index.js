@@ -173,6 +173,7 @@ app.get('/film/search/:titolo', (req,res) =>{
                 });
         });
     //  fine film_preferito()
+
 });
 
 app.get('/datiUtente', (req,res) =>{
@@ -295,6 +296,63 @@ app.post('/filmPreferito', (req,res) => {
 
 })
 
+app.post('/tempoLettura/:tempo/:titolo', (req,res) =>{
+    const tempoLettura = req.params["tempo"];
+    const titolo = req.params["titolo"];
+
+    //  Controlla se il film esiste già
+    db.query('SELECT titoloElemento FROM tempoLetturaTrama WHERE titoloElemento = ? AND emailUtente = ?;',
+        [titolo, req.session.user],
+        (err, result) => {
+            if (err) {
+                res.send({
+                    err: err
+                });
+            }
+
+            if (result.length > 0) {
+                db.query('UPDATE tempoLetturaTrama SET tempo = ? WHERE (emailUtente = ?) and (titoloElemento = ?);',[tempoLettura, req.session.user, titolo],
+                    (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.send({
+                                err: err
+                            });
+                        }
+                        if (result) {
+                            res.send('ok')
+                        } else {
+                            console.log(result);
+                            res.send('no');
+                        }
+                    }
+                );
+                
+            
+            //  Se il risultato è 0, ovvero non esiste il film, lo inserisce
+            } else {
+                db.query('INSERT INTO tempoLetturaTrama (titoloElemento, tempo, emailUtente) VALUES (?,?,?)',
+                    [titolo, tempoLettura, req.session.user],
+                    (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            res.send(false);
+                        } else {
+                            if (result) {
+                                res.send(result);
+                            } else {
+                                console.log(result);
+                                res.send(result);
+                            }
+                        }
+                    }
+                );
+            }
+        }
+    );
+});
+
 app.listen(3001, () => {
     console.log('Server avviato sulla porta 3001');
 })
+

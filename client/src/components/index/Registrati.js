@@ -68,9 +68,6 @@ const Registrati = () =>{
                     <Form.Label>Conferma password</Form.Label>
                     <Form.Control type="password" name='password' placeholder="Password" required/>
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Resta collegato" />
-                </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Text className="text-muted">
                         Se hai gi&agrave; un account, <Link to="/login">accedi ora!</Link>
