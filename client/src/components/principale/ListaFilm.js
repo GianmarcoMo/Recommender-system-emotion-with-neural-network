@@ -1,4 +1,5 @@
-import {React, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
+import React from 'react';
 import { useHistory } from "react-router-dom";
 
 import {Container} from 'react-bootstrap';
@@ -60,7 +61,7 @@ const ListaFilm = () =>{
 
                 switch(emozioneUtente){
                     case 'triste': 
-                        document.body.style.backgroundImage = "linear-gradient(to bottom right, #716F81, #12151e)";
+                        document.body.style.backgroundImage = "linear-gradient(to bottom right, #498642, #12151e)";
                         break;
                     case 'felice':  
                         document.body.style.backgroundImage = "linear-gradient(to bottom right, #B5DEFF, #12151e)";

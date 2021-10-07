@@ -1,4 +1,3 @@
-import numpy as np
 import cv2
 from cv2 import *
 from keras.models import Sequential, load_model
@@ -22,7 +21,6 @@ Altri pacchetti:
     pip install pillow
 - Js2Py
     pip install Js2Py
-
 """
 
 def identifica_emozione(emozioni):

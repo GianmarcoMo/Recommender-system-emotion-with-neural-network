@@ -1,4 +1,5 @@
-import {React, useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
+import React from 'react';
 import { useHistory, Link } from "react-router-dom";
 import {Form, Button, Modal} from 'react-bootstrap'
 import Axios from 'axios';

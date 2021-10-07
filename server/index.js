@@ -44,10 +44,10 @@ app.use(session({
 }))
 
 const db = createConnection({
-    user: 'root',
-    host: 'localhost',
-    password: 'password',
-    database: 'ProgettoFilmTesi',
+    user: 'NOME_USER',
+    host: 'NOME_HOST',
+    password: 'PASSWORD_DATABASE',
+    database: 'NOME_SCHEMA',
 });
 
 app.post('/registrati', (req, res) => {
@@ -122,6 +122,7 @@ app.post('/login', (req, res) => {
                 });
             }
 
+            console.log(result);
             if (result.length > 0) {
                 bcrypt.compare(passUtente, result[0].password, (err, response) => {
                     if (response) {

@@ -1,4 +1,5 @@
-import {React, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
+import React from 'react';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import { Form,Row, Col, Container, Table} from 'react-bootstrap';
@@ -18,7 +19,7 @@ const User = ()=>{
                 history.push('/');
             }else{
                 //  richiesta per mostrare i film piaciuti 
-                const filmPreferiti = await axios('http://localhost:3001/film/preferenze');
+                const filmPreferiti = await axios('http://localhost:3001/film/preferiti');
                 setFilmPreferiti(filmPreferiti.data);
 
                 const resDatiUtente = await axios('http://localhost:3001/datiUtente');
@@ -32,7 +33,7 @@ const User = ()=>{
 
     return (
         <Container>
-            {datiUtente && <Form action='/cambioDati'>
+            {datiUtente && <Form >
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridNomeCognome">
                         <Form.Label>Nome</Form.Label>
